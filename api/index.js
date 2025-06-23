@@ -16,7 +16,7 @@ const port = 3000;
 app.use(express.json()); 
 
 
-app.use('/', userRoutes);
+app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
 //error handling middleware
 app.use((err, req, res, next) => {
