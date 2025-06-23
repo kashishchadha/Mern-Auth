@@ -1,6 +1,6 @@
 import User from "../modals/user.model.js";
 import bcrypt from "bcryptjs";
-export const signup =  async (req, res) => {
+export const signup =  async (req, res,next) => {
     console.log(req.body);
     const { username, email, password } = req.body;
 
@@ -33,11 +33,7 @@ bcrypt.genSalt(10, async (err, salt) => {
                 message: "User created successfully"
             });
         } catch (error) {
-            console.error("Error creating user:", error);
-            res.status(500).json({
-                message: "Error creating user",
-                error: error.message
-            });
+          next(error);
         }
     });
     });

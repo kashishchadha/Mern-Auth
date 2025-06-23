@@ -13,7 +13,18 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
 const app = express();
 const port = 3000;
 
-app.use(express.json()); // <-- Add this line
+app.use(express.json()); 
+
+//error handling middleware
+app.use((err, req, res, next) => {
+ const statusCode = err.statusCode || 500;
+ const message = err.message || 'Internal Server Error';
+ res.status(statusCode).json({
+     status: 'error',
+     statusCode,
+     message
+ });
+});
 
 app.use('/', userRoutes);
 app.use('/api/auth', authRoutes);
