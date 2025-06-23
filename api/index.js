@@ -15,6 +15,9 @@ const port = 3000;
 
 app.use(express.json()); 
 
+
+app.use('/', userRoutes);
+app.use('/api/auth', authRoutes);
 //error handling middleware
 app.use((err, req, res, next) => {
  const statusCode = err.statusCode || 500;
@@ -26,8 +29,6 @@ app.use((err, req, res, next) => {
  });
 });
 
-app.use('/', userRoutes);
-app.use('/api/auth', authRoutes);
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });

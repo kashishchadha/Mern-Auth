@@ -21,7 +21,6 @@ bcrypt.genSalt(10, async (err, salt) => {
             });
         }
 
-        // Save the user with the hashed password
         try {
             const newUser = new User({
                 username,
@@ -33,8 +32,9 @@ bcrypt.genSalt(10, async (err, salt) => {
                 message: "User created successfully"
             });
         } catch (error) {
-          next(error);
-        }
+  console.error(error); // Add this line
+  next(error);
+}
     });
     });
 
