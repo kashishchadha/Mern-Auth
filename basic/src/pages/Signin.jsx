@@ -1,43 +1,42 @@
 import React, { useState } from 'react'
 import { Link ,useNavigate} from 'react-router-dom'
-
+import { signinstart,signinSuccess,signinFailure } from '../redux/user/userSlice'
+import { useDispatch ,useSelector} from 'react-redux';
 function Signin() {
   const [formdata, setFormdata] = useState({})
-  const [error, setError] = useState(false)
-  const [loading, setLoading] = useState(false)
+ const {loading, error} = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handlechange = (e) => {
     setFormdata({ ...formdata, [e.target.id]: e.target.value })
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      setLoading(true)
-      setError(false)
-      const res = await fetch('/api/auth/signin', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formdata)
-      })
-      const data = await res.json();
-      setLoading(false);
-      if (data.status === 'error' || data.success === false) {
-        setError(true)
-        return;
-      }
-      setError(false)
-       setFormdata({}) 
-       navigate('/')
-    } catch (error) {
-      setLoading(false);
-      setError(true)
-    }
-  }
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    dispatch(signinstart());
+    const res = await fetch('/api/auth/signin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formdata)
+    });
+    const data = await res.json();
 
+    if (data.status === 'error' || data.success === false) {
+      dispatch(signinFailure(data.message || "Sign in failed"));
+      return;
+    }
+
+    dispatch(signinSuccess(data));
+    setFormdata({});
+    navigate('/');
+  } catch (error) {
+    dispatch(signinFailure("Network error"));
+  }
+};
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl text-center font-semibold my-7'>Sign In</h1>
@@ -52,7 +51,7 @@ function Signin() {
         <p>Dont have an account?</p>
         <Link to='/signup'><span className='text-blue-500'>Sign up</span></Link>
       </div>
-      <p className='text-red-700 mt-5'>{error && 'Something went wrong!'}</p>
+      <p className='text-red-700 mt-5'>{error ? error|| 'Something went wrong!' : ""}</p>
     </div>
   )
 }
