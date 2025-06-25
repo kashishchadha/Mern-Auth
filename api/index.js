@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import cors from 'cors';
 
-dotenv.config();
+dotenv.config({ path: path.join(__dirname, '.env') });
 import path from 'path';
 import userRoutes from './routes/user.routes.js';
 import authRoutes from './routes/auth.router.js';
