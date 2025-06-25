@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import userRoutes from './routes/user.routes.js';
 import authRoutes from './routes/auth.router.js';
-
+import cookieParser from 'cookie-parser';
 mongoose.connect(process.env.MONGODB_URI).then(() => {
   console.log('Connected to MongoDB');
 }).catch(err => {
@@ -12,7 +12,7 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
 });
 const app = express();
 const port = 3000;
-
+app.use(cookieParser());
 app.use(express.json()); 
 
 
