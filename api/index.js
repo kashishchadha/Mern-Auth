@@ -1,6 +1,9 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
 dotenv.config();
 import path from 'path';
 import userRoutes from './routes/user.routes.js';
@@ -15,7 +18,7 @@ const app = express();
 const port = 3000;
 app.use(cookieParser());
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = dirname(__filename);
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname, '../basic/dist')));
