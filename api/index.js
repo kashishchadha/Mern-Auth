@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 dotenv.config();
+import path from 'path';
 import userRoutes from './routes/user.routes.js';
 import authRoutes from './routes/auth.router.js';
 import cookieParser from 'cookie-parser';
@@ -15,7 +16,12 @@ const port = 3000;
 app.use(cookieParser());
 app.use(express.json()); 
 
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, '/basic/dist')));
 
+app.get('*',(req,res)=> {
+  res.sendFile(path.join(__dirname, 'basic', 'dist', 'index.html'));
+});
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
 //error handling middleware
