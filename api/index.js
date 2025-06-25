@@ -14,11 +14,11 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
 const app = express();
 const port = 3000;
 app.use(cookieParser());
-app.use(express.json()); 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.json());
 
-const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, '/basic/dist')));
-
+app.use(express.static(path.join(__dirname, '../basic/dist')));
 
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
@@ -34,8 +34,8 @@ app.use((err, req, res, next) => {
      message
  });
 });
-app.get('*',(req,res)=> {
-  res.sendFile(path.join(__dirname, 'basic', 'dist', 'index.html'));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../basic/dist/index.html'));
 });
 
 app.listen(port, () => {
