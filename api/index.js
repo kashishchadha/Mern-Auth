@@ -4,9 +4,11 @@ import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import cors from 'cors';
-
-dotenv.config({ path: path.join(__dirname, '.env') });
 import path from 'path';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+dotenv.config({ path: path.join(__dirname, '.env') });
+
 import userRoutes from './routes/user.routes.js';
 import authRoutes from './routes/auth.router.js';
 import cookieParser from 'cookie-parser';
@@ -18,13 +20,13 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
 const app = express();
 
 const port = 3000;
+
 app.use(cors({
   origin: 'https://mern-auth-22gn.onrender.com', // Adjust this to your frontend's URL
   credentials: true // Allow cookies to be sent
 }));
 app.use(cookieParser());
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname, '../basic/dist')));
