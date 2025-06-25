@@ -19,11 +19,11 @@ app.use(express.json());
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, '/basic/dist')));
 
-app.get('*',(req,res)=> {
-  res.sendFile(path.join(__dirname, 'basic', 'dist', 'index.html'));
-});
+
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
+
+
 //error handling middleware
 app.use((err, req, res, next) => {
  const statusCode = err.statusCode || 500;
@@ -33,6 +33,9 @@ app.use((err, req, res, next) => {
      statusCode,
      message
  });
+});
+app.get('*',(req,res)=> {
+  res.sendFile(path.join(__dirname, 'basic', 'dist', 'index.html'));
 });
 
 app.listen(port, () => {
